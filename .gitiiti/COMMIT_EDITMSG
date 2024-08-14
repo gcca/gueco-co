@@ -1,0 +1,8 @@
+Inicio
+
+Funcionalidades iniciales:
+  - Autenticación básica HTTP.
+  - Interfaz RESTful /escenario: todos, uno, almacenar.
+  - Interfaz para motor de inferencia /gueco.
+
+Firmado-X: gcca <gcca@gcca.tk>

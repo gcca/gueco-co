@@ -1,0 +1,50 @@
+var interfaz = require('gueco/dominio/comun/interfaz')
+
+exports.dominio = {
+
+    comun: {
+
+        interfaz: {
+            'constructor': function () {
+
+            }, // <- constructor
+
+            'asegura implementación': function (prueba) {
+                prueba.expect(3)
+
+                var figura = new interfaz('figura', ['dibujar', 'area'])
+
+                function circulo () {
+                    interfaz.asegurar_implementacion(this, figura) }
+
+                try {
+                    new circulo
+                } catch (e) {
+                    prueba.ok(true)
+                }
+
+                circulo.prototype.dibujar = function () {}
+
+                try {
+                    new circulo
+                } catch (e) {
+                    prueba.ok(true)
+                }
+
+                circulo.prototype.area = function () {}
+
+                try {
+                    new circulo
+                    prueba.ok(true)
+                } catch (e) {
+                    prueba.ok(false)
+                }
+
+                prueba.done()
+            } // <- asegura implementación
+
+        } // <- interfaz
+
+    } // <- comun
+
+} // <- dominio

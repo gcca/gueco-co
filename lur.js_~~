@@ -1,0 +1,92 @@
+//! \package interfaz
+
+//! Dependencias
+var servidor = module.exports = require('express').createServer()
+var configuracion = require('gueco/configuracion')
+
+var gueco = require('gueco/infraestructura')
+var g = gueco
+
+//! Configuración
+servidor.use(function (_, respuesta, siguiente) {
+    respuesta.header('X-Powered-By',
+                     'FP Gueco: Equipo de desarrollo: gcca, cgcc')
+    respuesta.header('Content-Type', 'application/json charset=UTF-8')
+    respuesta.header('Access-Control-Allow-Origin',
+                     configuracion.cabecera
+                        .control_acceso_permitir_origen)
+    siguiente()
+})
+servidor.options('*', function (_, respuesta, siguiente) {
+    respuesta.header('Access-Control-Allow-Methods',
+                     'POST, GET, OPTIONS, PUT, DELETE')
+    respuesta.header('Access-Control-Allow-Headers',
+                     'Authorization')
+    respuesta.header('Access-Control-Allow-Credentials',
+                     'true')
+    siguiente()
+})
+
+
+//! Funciones
+function util_fijarcontexto(c, f){return function(){f.apply(c,arguments)}}
+
+function util_fijarcuerpo(p, r, s) {
+    var otd = ''
+    p.on('data', function(tarugo) { otd += tarugo })
+    p.on('end', function() {
+        try {
+            p.cuerpo = otd.length ? JSON.parse(otd) : {}
+            s()
+        } catch (e) {
+            r.send(400)
+        }
+    })
+}
+
+function util_exponer_recurso(servidor, rec) {
+    servidor.get(rec, function (_, respuesta) {
+        // GET
+    })
+    servidor.get(rec+'/:id', function (peticion, respuesta) {
+        // GET id
+    })
+    servidor.post(rec, function (peticion, respuesta) {
+        // POST
+    })
+    servidor.put(rec+'/:id', function (peticion, respuesta) {
+        // PUT
+    })
+    servidor.delete(rec+'/:id', function (peticion, respuesta) {
+        // DELETE
+    })
+}
+
+// servicios
+servidor.get('/', function (peticion, respuesta) {
+    respuesta.send('Gueco')
+})
+
+var control_aplic = g.i.c.aplicacion()
+var control_escen = g.i.c.escenario()
+var control_usr = g.i.c.usuario()
+
+var verificar_autorizacion =
+    util_fijarcontexto(control_aplic,
+                       g.i.c.aplicacion$.peticion_es_autorizada)
+
+servidor.get('/escenario', verificar_autorizacion,
+             util_fijarcontexto(control_usr, g.i.c.usuario$.escenarios))
+servidor.get('/escenario/:id', verificar_autorizacion,
+             util_fijarcontexto(control_usr, g.i.c.usuario$.escenario))
+servidor.post('/escenario', util_fijarcuerpo, verificar_autorizacion,
+              util_fijarcontexto(control_usr,
+                                 g.i.c.usuario$.almacenar_escenarios))
+
+
+//process.on('uncaughtException', function(err) {
+//process.addListener("uncaughtException", function (err) {
+ //       logger.error("Uncaught exception: " + err)
+//})
+
+servidor.listen(8000)

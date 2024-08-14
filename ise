@@ -1,0 +1,10 @@
+#!/bin/fish
+set PATH /gcca/ps/node/bin /gcca/inframundo/ps/mongodb/bin $PATH
+set B /gcca/hogar/SpiderOak/pro_gueco/gueco
+set -x NODE_PATH $B
+#mkdir /dev/shm/datos
+#mongod --fork --dbpath /dev/shm/datos 
+#mongo gueco <$B/datos.js
+#ls -d ~/SpiderOak/gueco/build/*|xargs -if ln -s f
+#mkdir /dev/shm/htdocs
+sudo lighttpd -D -f /gcca/ps/lighttpd/conf

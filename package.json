@@ -1,0 +1,21 @@
+{
+  "name": "gueco",
+  "subdomain": "gueco",
+  "author": "gcca <gcca@gcca.tk>",
+  "description": "tesis",
+  "scripts": {
+    "start": "lur.js"
+  },
+  "version": "0.0.0-28",
+  "engines": {
+    "node": ">=0.8.x"
+  },
+  "dependencies": {
+    "express": "2.5.x",
+    "mongoskin": "0.3.x"
+  },
+  "bundleDependencies": [
+    "gueco"
+  ],
+  "analyse": "false"
+}

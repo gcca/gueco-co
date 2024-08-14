@@ -1,0 +1,6 @@
+#!/bin/fish
+#set PATH /gcca/ps/node/bin /gcca/inframundo/ps/mongodb/bin $PATH
+set B /gcca/hogar/SpiderOak/pro_gueco/gueco
+#set -x NODE_PATH $B
+sleep 2
+mongo gueco <$B/datos.js
